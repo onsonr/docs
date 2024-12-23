@@ -13,12 +13,9 @@ theme:
     # - content.footnote.tooltips
     # - content.tabs.link
     - content.tooltips
-    - header.autohide
-    # - navigation.expand
     - navigation.footer
     - navigation.indexes
     - navigation.instant
-    - navigation.instant.prefetch
     # - navigation.instant.progress
     # - navigation.prune
     - navigation.sections
@@ -31,25 +28,6 @@ theme:
     - search.suggest
     - toc.follow
     - toc.integrate
-  palette:
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/link
-        name: Switch to light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: cyan
-      accent: cyan
-      toggle:
-        icon: material/moon-waning-crescent
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: black
-      accent: cyan
-      toggle:
-        icon: material/sun
-        name: Switch to system preference
   font:
     text: Geist
     code: Geist Mono
