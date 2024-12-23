@@ -1,0 +1,1675 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sonr is a decentralized identity network built on the Cosmos-sdk. It has early origins as a peer-to-peer file sharing network, but has since evolved into a platform for decentralized authentication and authorization. The early lessons taught from our file sharing roots are used as our theology for building the Sonr Blockchain.">
+      
+      
+      
+        <link rel="canonical" href="https://onsonr.dev/tools/ibc-fee-middleware/">
+      
+      
+        <link rel="prev" href="../ibc-accounts/">
+      
+      
+        <link rel="next" href="../ibc-transfer/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Overview - Sonr Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:300,300i,400,400i,700,700i%7CGeist+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Geist";--md-code-font:"Geist Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Sonr Docs" class="md-header__button md-logo" aria-label="Sonr Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sonr Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/Chain-Modules/" class="md-tabs__link">
+          
+  
+    
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../modules/sonr-did/" class="md-tabs__link">
+          
+  
+    
+  
+  Modules
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../cosmos-proto/" class="md-tabs__link">
+          
+  
+    
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Sonr Docs" class="md-nav__button md-logo" aria-label="Sonr Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sonr Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Chain-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Consumer-Launch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Chain Launch Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Self-Custody/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Self Custody
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/System-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Token-Economy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Economy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/nebula-ui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Nebula ui
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/sdk-usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sdk usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/svc-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Svc management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-proto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Protocol Buffers in Cosmos SDK
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-rfc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 004: Account System Refactor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cosmos SDK Core Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-accounts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interchain Accounts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-fee-middleware/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-transfer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Modules
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-did/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/did
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-dwn/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/dwn
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/svc
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sonr token
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ucan-spec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Controlled Authorization Network (UCAN) Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cosmos-proto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Protocol Buffers in Cosmos SDK
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cosmos-rfc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 004: Account System Refactor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cosmos-sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cosmos SDK Core Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ibc-accounts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interchain Accounts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-fee-middleware-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the Fee Middleware module?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known Limitations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-integration-of-the-fee-middleware-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example integration of the Fee Middleware module
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-an-application-stack-with-fee-middleware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring an application stack with Fee Middleware
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring an application stack with Fee Middleware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transfer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interchain-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interchain Accounts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fee-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fee Distribution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-a-counterparty-payee-address-for-forward-relaying" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register a counterparty payee address for forward relaying
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Register a counterparty payee address for forward relaying">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relayer-operator-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relayer operator actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-an-alternative-payee-address-for-reverse-and-timeout-relaying" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register an alternative payee address for reverse and timeout relaying
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Register an alternative payee address for reverse and timeout relaying">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relayer-operator-actions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relayer operator actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ibc-transfer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="overview">Overview</h1>
+<p>:::note Synopsis
+Learn about what the Fee Middleware module is, and how to build custom modules that utilize the Fee Middleware functionality
+:::</p>
+<h2 id="what-is-the-fee-middleware-module">What is the Fee Middleware module?</h2>
+<p>IBC does not depend on relayer operators for transaction verification. However, the relayer infrastructure ensures liveness of the Interchain network — operators listen for packets sent through channels opened between chains, and perform the vital service of ferrying these packets (and proof of the transaction on the sending chain/receipt on the receiving chain) to the clients on each side of the channel.</p>
+<p>Though relaying is permissionless and completely decentralized and accessible, it does come with operational costs. Running full nodes to query transaction proofs and paying for transaction fees associated with IBC packets are two of the primary cost burdens which have driven the overall discussion on <strong>a general, in-protocol incentivization mechanism for relayers</strong>.</p>
+<p>Initially, a <a href="https://github.com/cosmos/ibc/pull/577/files">simple proposal</a> was created to incentivize relaying on ICS20 token transfers on the destination chain. However, the proposal was specific to ICS20 token transfers and would have to be reimplemented in this format on every other IBC application module.</p>
+<p>After much discussion, the proposal was expanded to a <a href="https://github.com/cosmos/ibc/tree/master/spec/app/ics-029-fee-payment">general incentivisation design</a> that can be adopted by any ICS application protocol as <a href="../../01-ibc/04-middleware/02-develop.md">middleware</a>.</p>
+<h2 id="concepts">Concepts</h2>
+<p>ICS29 fee payments in this middleware design are built on the assumption that sender chains are the source of incentives — the chain on which packets are incentivized is the chain that distributes fees to relayer operators. However, as part of the IBC packet flow, messages have to be submitted on both sender and destination chains. This introduces the requirement of a mapping of relayer operator's addresses on both chains.</p>
+<p>To achieve the stated requirements, the <strong>fee middleware module has two main groups of functionality</strong>:</p>
+<ul>
+<li>Registering of relayer addresses associated with each party involved in relaying the packet on the source chain. This registration process can be automated on start up of relayer infrastructure and happens only once, not every packet flow.</li>
+</ul>
+<p>This is described in the <a href="04-fee-distribution.md">Fee distribution section</a>.</p>
+<ul>
+<li>Escrowing fees by any party which will be paid out to each rightful party on completion of the packet lifecycle.</li>
+</ul>
+<p>This is described in the <a href="03-msgs.md">Fee messages section</a>.</p>
+<p>We complete the introduction by giving a list of definitions of relevant terminology.</p>
+<p><code>Forward relayer</code>: The relayer that submits the <code>MsgRecvPacket</code> message for a given packet (on the destination chain).</p>
+<p><code>Reverse relayer</code>: The relayer that submits the <code>MsgAcknowledgement</code> message for a given packet (on the source chain).</p>
+<p><code>Timeout relayer</code>: The relayer that submits the <code>MsgTimeout</code> or <code>MsgTimeoutOnClose</code> messages for a given packet (on the source chain).</p>
+<p><code>Payee</code>: The account address on the source chain to be paid on completion of the packet lifecycle. The packet lifecycle on the source chain completes with the receipt of a <code>MsgTimeout</code>/<code>MsgTimeoutOnClose</code> or a <code>MsgAcknowledgement</code>.</p>
+<p><code>Counterparty payee</code>: The account address to be paid on completion of the packet lifecycle on the destination chain. The package lifecycle on the destination chain completes with a successful <code>MsgRecvPacket</code>.</p>
+<p><code>Refund address</code>: The address of the account paying for the incentivization of packet relaying. The account is refunded timeout fees upon successful acknowledgement. In the event of a packet timeout, both acknowledgement and receive fees are refunded.</p>
+<h2 id="known-limitations">Known Limitations</h2>
+<ul>
+<li>At the time of the release of the feature (ibc-go v4) fee payments middleware only supported incentivisation of new channels; however, with the release of channel upgradeability (ibc-go v8.1) it is possible to enable incentivisation of all existing channels.</li>
+<li>Even though unlikely, there exists a DoS attack vector on a fee-enabled channel if 1) there exists a relayer software implementation that is incentivised to timeout packets if the timeout fee is greater than the sum of the fees to receive and acknowledge the packet, and 2) only this type of implementation is used by operators relaying on the channel. In this situation, an attacker could continuously incentivise the relayers to never deliver the packets by incrementing the timeout fee of the packets above the sum of the receive and acknowledge fees. However, this situation is unlikely to occur because 1) another relayer behaving honestly could relay the packets before they timeout, and 2) the attack would be costly because the attacker would need to incentivise the timeout fee of the packets with their own funds. Given the low impact and unlikelihood of the attack we have decided to accept this risk and not implement any mitigation mesaures.</li>
+</ul>
+<h2 id="module-integration">Module Integration</h2>
+<p>The Fee Middleware module, as the name suggests, plays the role of an IBC middleware and as such must be configured by chain developers to route and handle IBC messages correctly.
+For Cosmos SDK chains this setup is done via the <code>app/app.go</code> file, where modules are constructed and configured in order to bootstrap the blockchain application.</p>
+<h2 id="example-integration-of-the-fee-middleware-module">Example integration of the Fee Middleware module</h2>
+<pre><code class="language-go">// app.go
+
+// Register the AppModule for the fee middleware module
+ModuleBasics = module.NewBasicManager(
+  ...
+  ibcfee.AppModuleBasic{},
+  ...
+)
+
+...
+
+// Add module account permissions for the fee middleware module
+maccPerms = map[string][]string{
+  ...
+  ibcfeetypes.ModuleName:            nil,
+}
+
+...
+
+// Add fee middleware Keeper
+type App struct {
+  ...
+
+  IBCFeeKeeper ibcfeekeeper.Keeper
+
+  ...
+}
+
+...
+
+// Create store keys
+keys := sdk.NewKVStoreKeys(
+  ...
+  ibcfeetypes.StoreKey,
+  ...
+)
+
+...
+
+app.IBCFeeKeeper = ibcfeekeeper.NewKeeper(
+  appCodec, keys[ibcfeetypes.StoreKey],
+  app.IBCKeeper.ChannelKeeper, // may be replaced with IBC middleware
+  app.IBCKeeper.ChannelKeeper,
+  &amp;app.IBCKeeper.PortKeeper, app.AccountKeeper, app.BankKeeper,
+)
+
+
+// See the section below for configuring an application stack with the fee middleware module
+
+...
+
+// Register fee middleware AppModule
+app.moduleManager = module.NewManager(
+  ...
+  ibcfee.NewAppModule(app.IBCFeeKeeper),
+)
+
+...
+
+// Add fee middleware to begin blocker logic
+app.moduleManager.SetOrderBeginBlockers(
+  ...
+  ibcfeetypes.ModuleName,
+  ...
+)
+
+// Add fee middleware to end blocker logic
+app.moduleManager.SetOrderEndBlockers(
+  ...
+  ibcfeetypes.ModuleName,
+  ...
+)
+
+// Add fee middleware to init genesis logic
+app.moduleManager.SetOrderInitGenesis(
+  ...
+  ibcfeetypes.ModuleName,
+  ...
+)
+</code></pre>
+<h2 id="configuring-an-application-stack-with-fee-middleware">Configuring an application stack with Fee Middleware</h2>
+<p>As mentioned in <a href="../../01-ibc/04-middleware/02-develop.md">IBC middleware development</a> an application stack may be composed of many or no middlewares that nest a base application.
+These layers form the complete set of application logic that enable developers to build composable and flexible IBC application stacks.
+For example, an application stack may be just a single base application like <code>transfer</code>, however, the same application stack composed with <code>29-fee</code> will nest the <code>transfer</code> base application
+by wrapping it with the Fee Middleware module.</p>
+<h3 id="transfer">Transfer</h3>
+<p>See below for an example of how to create an application stack using <code>transfer</code> and <code>29-fee</code>.
+The following <code>transferStack</code> is configured in <code>app/app.go</code> and added to the IBC <code>Router</code>.
+The in-line comments describe the execution flow of packets between the application stack and IBC core.</p>
+<pre><code class="language-go">// Create Transfer Stack
+// SendPacket, since it is originating from the application to core IBC:
+// transferKeeper.SendPacket -&gt; fee.SendPacket -&gt; channel.SendPacket
+
+// RecvPacket, message that originates from core IBC and goes down to app, the flow is the other way
+// channel.RecvPacket -&gt; fee.OnRecvPacket -&gt; transfer.OnRecvPacket
+
+// transfer stack contains (from top to bottom):
+// - IBC Fee Middleware
+// - Transfer
+
+// create IBC module from bottom to top of stack
+var transferStack porttypes.IBCModule
+transferStack = transfer.NewIBCModule(app.TransferKeeper)
+transferStack = ibcfee.NewIBCMiddleware(transferStack, app.IBCFeeKeeper)
+
+// Add transfer stack to IBC Router
+ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferStack)
+</code></pre>
+<h3 id="interchain-accounts">Interchain Accounts</h3>
+<p>See below for an example of how to create an application stack using <code>27-interchain-accounts</code> and <code>29-fee</code>.
+The following <code>icaControllerStack</code> and <code>icaHostStack</code> are configured in <code>app/app.go</code> and added to the IBC <code>Router</code> with the associated authentication module.
+The in-line comments describe the execution flow of packets between the application stack and IBC core.</p>
+<pre><code class="language-go">// Create Interchain Accounts Stack
+// SendPacket, since it is originating from the application to core IBC:
+// icaAuthModuleKeeper.SendTx -&gt; icaController.SendPacket -&gt; fee.SendPacket -&gt; channel.SendPacket
+
+// initialize ICA module with mock module as the authentication module on the controller side
+var icaControllerStack porttypes.IBCModule
+icaControllerStack = ibcmock.NewIBCModule(&amp;mockModule, ibcmock.NewMockIBCApp(&quot;&quot;, scopedICAMockKeeper))
+app.ICAAuthModule = icaControllerStack.(ibcmock.IBCModule)
+icaControllerStack = icacontroller.NewIBCMiddleware(icaControllerStack, app.ICAControllerKeeper)
+icaControllerStack = ibcfee.NewIBCMiddleware(icaControllerStack, app.IBCFeeKeeper)
+
+// RecvPacket, message that originates from core IBC and goes down to app, the flow is:
+// channel.RecvPacket -&gt; fee.OnRecvPacket -&gt; icaHost.OnRecvPacket
+
+var icaHostStack porttypes.IBCModule
+icaHostStack = icahost.NewIBCModule(app.ICAHostKeeper)
+icaHostStack = ibcfee.NewIBCMiddleware(icaHostStack, app.IBCFeeKeeper)
+
+// Add authentication module, controller and host to IBC router
+ibcRouter.
+  // the ICA Controller middleware needs to be explicitly added to the IBC Router because the
+  // ICA controller module owns the port capability for ICA. The ICA authentication module
+  // owns the channel capability.
+  AddRoute(ibcmock.ModuleName+icacontrollertypes.SubModuleName, icaControllerStack) // ica with mock auth module stack route to ica (top level of middleware stack)
+  AddRoute(icacontrollertypes.SubModuleName, icaControllerStack).
+  AddRoute(icahosttypes.SubModuleName, icaHostStack).
+</code></pre>
+<h2 id="fee-distribution">Fee Distribution</h2>
+<p>Packet fees are divided into 3 distinct amounts in order to compensate relayer operators for packet relaying on fee enabled IBC channels.</p>
+<ul>
+<li><code>RecvFee</code>: The sum of all packet receive fees distributed to a payee for successful execution of <code>MsgRecvPacket</code>.</li>
+<li><code>AckFee</code>: The sum of all packet acknowledgement fees distributed to a payee for successful execution of <code>MsgAcknowledgement</code>.</li>
+<li><code>TimeoutFee</code>: The sum of all packet timeout fees distributed to a payee for successful execution of <code>MsgTimeout</code>.</li>
+</ul>
+<h2 id="register-a-counterparty-payee-address-for-forward-relaying">Register a counterparty payee address for forward relaying</h2>
+<p>As mentioned in <a href="01-overview.md#concepts">ICS29 Concepts</a>, the forward relayer describes the actor who performs the submission of <code>MsgRecvPacket</code> on the destination chain.
+Fee distribution for incentivized packet relays takes place on the packet source chain.</p>
+<blockquote>
+<p>Relayer operators are expected to register a counterparty payee address, in order to be compensated accordingly with <code>RecvFee</code>s upon completion of a packet lifecycle.</p>
+</blockquote>
+<p>The counterparty payee address registered on the destination chain is encoded into the packet acknowledgement and communicated as such to the source chain for fee distribution.
+<strong>If a counterparty payee is not registered for the forward relayer on the destination chain, the escrowed fees will be refunded upon fee distribution.</strong></p>
+<h3 id="relayer-operator-actions">Relayer operator actions</h3>
+<p>A transaction must be submitted <strong>to the destination chain</strong> including a <code>CounterpartyPayee</code> address of an account on the source chain.
+The transaction must be signed by the <code>Relayer</code>.</p>
+<p>Note: If a module account address is used as the <code>CounterpartyPayee</code> but the module has been set as a blocked address in the <code>BankKeeper</code>, the refunding to the module account will fail. This is because many modules use invariants to compare internal tracking of module account balances against the actual balance of the account stored in the <code>BankKeeper</code>. If a token transfer to the module account occurs without going through this module and updating the account balance of the module on the <code>BankKeeper</code>, then invariants may break and unknown behaviour could occur depending on the module implementation. Therefore, if it is desirable to use a module account that is currently blocked, the module developers should be consulted to gauge to possibility of removing the module account from the blocked list.</p>
+<pre><code class="language-go">type MsgRegisterCounterpartyPayee struct {
+  // unique port identifier
+  PortId string
+  // unique channel identifier
+  ChannelId string
+  // the relayer address
+  Relayer string
+  // the counterparty payee address
+  CounterpartyPayee string
+}
+</code></pre>
+<blockquote>
+<p>This message is expected to fail if:</p>
+<ul>
+<li><code>PortId</code> is invalid (see <a href="https://github.com/cosmos/ibc/blob/master/spec/core/ics-024-host-requirements/README.md#paths-identifiers-separators">24-host naming requirements</a>.</li>
+<li><code>ChannelId</code> is invalid (see <a href="https://github.com/cosmos/ibc/blob/master/spec/core/ics-024-host-requirements/README.md#paths-identifiers-separators">24-host naming requirements</a>).</li>
+<li><code>Relayer</code> is an invalid address (see <a href="https://github.com/cosmos/cosmos-sdk/blob/main/docs/learn/beginner/03-accounts.md#addresses">Cosmos SDK Addresses</a>).</li>
+<li><code>CounterpartyPayee</code> is empty or contains more than 2048 bytes.</li>
+</ul>
+</blockquote>
+<p>See below for an example CLI command:</p>
+<pre><code class="language-bash">simd tx ibc-fee register-counterparty-payee transfer channel-0 \
+  cosmos1rsp837a4kvtgp2m4uqzdge0zzu6efqgucm0qdh \
+  osmo1v5y0tz01llxzf4c2afml8s3awue0ymju22wxx2 \
+  --from cosmos1rsp837a4kvtgp2m4uqzdge0zzu6efqgucm0qdh
+</code></pre>
+<h2 id="register-an-alternative-payee-address-for-reverse-and-timeout-relaying">Register an alternative payee address for reverse and timeout relaying</h2>
+<p>As mentioned in <a href="01-overview.md#concepts">ICS29 Concepts</a>, the reverse relayer describes the actor who performs the submission of <code>MsgAcknowledgement</code> on the source chain.
+Similarly the timeout relayer describes the actor who performs the submission of <code>MsgTimeout</code> (or <code>MsgTimeoutOnClose</code>) on the source chain.</p>
+<blockquote>
+<p>Relayer operators <strong>may choose</strong> to register an optional payee address, in order to be compensated accordingly with <code>AckFee</code>s and <code>TimeoutFee</code>s upon completion of a packet life cycle.</p>
+</blockquote>
+<p>If a payee is not registered for the reverse or timeout relayer on the source chain, then fee distribution assumes the default behaviour, where fees are paid out to the relayer account which delivers <code>MsgAcknowledgement</code> or <code>MsgTimeout</code>/<code>MsgTimeoutOnClose</code>.</p>
+<h3 id="relayer-operator-actions_1">Relayer operator actions</h3>
+<p>A transaction must be submitted <strong>to the source chain</strong> including a <code>Payee</code> address of an account on the source chain.
+The transaction must be signed by the <code>Relayer</code>.</p>
+<p>Note: If a module account address is used as the <code>Payee</code> it is recommended to <a href="https://github.com/cosmos/ibc-go/blob/v7.0.0/testing/simapp/app.go#L727">turn off invariant checks</a> for that module.</p>
+<pre><code class="language-go">type MsgRegisterPayee struct {
+  // unique port identifier
+  PortId string
+  // unique channel identifier
+  ChannelId string
+  // the relayer address
+  Relayer string
+  // the payee address
+  Payee string
+}
+</code></pre>
+<blockquote>
+<p>This message is expected to fail if:</p>
+<ul>
+<li><code>PortId</code> is invalid (see <a href="https://github.com/cosmos/ibc/blob/master/spec/core/ics-024-host-requirements/README.md#paths-identifiers-separators">24-host naming requirements</a>.</li>
+<li><code>ChannelId</code> is invalid (see <a href="https://github.com/cosmos/ibc/blob/master/spec/core/ics-024-host-requirements/README.md#paths-identifiers-separators">24-host naming requirements</a>).</li>
+<li><code>Relayer</code> is an invalid address (see <a href="https://github.com/cosmos/cosmos-sdk/blob/main/docs/learn/beginner/03-accounts.md#addresses">Cosmos SDK Addresses</a>).</li>
+<li><code>Payee</code> is an invalid address (see <a href="https://github.com/cosmos/cosmos-sdk/blob/main/docs/learn/beginner/03-accounts.md#addresses">Cosmos SDK Addresses</a>).</li>
+</ul>
+</blockquote>
+<p>See below for an example CLI command:</p>
+<pre><code class="language-bash">simd tx ibc-fee register-payee transfer channel-0 \
+  cosmos1rsp837a4kvtgp2m4uqzdge0zzu6efqgucm0qdh \
+  cosmos153lf4zntqt33a4v0sm5cytrxyqn78q7kz8j8x5 \
+  --from cosmos1rsp837a4kvtgp2m4uqzdge0zzu6efqgucm0qdh
+</code></pre>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../ibc-accounts/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Interchain Accounts">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Interchain Accounts
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../ibc-transfer/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

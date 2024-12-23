@@ -1,0 +1,1893 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sonr is a decentralized identity network built on the Cosmos-sdk. It has early origins as a peer-to-peer file sharing network, but has since evolved into a platform for decentralized authentication and authorization. The early lessons taught from our file sharing roots are used as our theology for building the Sonr Blockchain.">
+      
+      
+      
+        <link rel="canonical" href="https://onsonr.dev/tools/cosmos-proto/">
+      
+      
+        <link rel="prev" href="../../modules/ucan-spec/">
+      
+      
+        <link rel="next" href="../cosmos-rfc/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Protocol Buffers in Cosmos SDK - Sonr Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:300,300i,400,400i,700,700i%7CGeist+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Geist";--md-code-font:"Geist Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#protocol-buffers-in-cosmos-sdk" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Sonr Docs" class="md-header__button md-logo" aria-label="Sonr Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sonr Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Protocol Buffers in Cosmos SDK
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/Chain-Modules/" class="md-tabs__link">
+          
+  
+    
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../modules/sonr-did/" class="md-tabs__link">
+          
+  
+    
+  
+  Modules
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+    
+  
+  Tools
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Sonr Docs" class="md-nav__button md-logo" aria-label="Sonr Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sonr Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Chain-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Consumer-Launch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Chain Launch Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Self-Custody/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Self Custody
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/System-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/Token-Economy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Economy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/nebula-ui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Nebula ui
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/sdk-usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sdk usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/svc-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Svc management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-proto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Protocol Buffers in Cosmos SDK
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-rfc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 004: Account System Refactor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/cosmos-sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cosmos SDK Core Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-accounts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interchain Accounts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-fee-middleware/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/tools/ibc-transfer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Modules
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-did/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/did
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-dwn/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/dwn
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x/svc
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/sonr-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sonr token
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/ucan-spec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Controlled Authorization Network (UCAN) Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Protocol Buffers in Cosmos SDK
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Protocol Buffers in Cosmos SDK
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generation Tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buf-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buf Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Buf Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bufgengogoyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      buf.gen.gogo.yaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bufgenswaggeryaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      buf.gen.swagger.yaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bufyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      buf.yaml
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-incrementing-primary-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Auto-incrementing Primary Keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unique-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique Indexes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singletons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Singletons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-codegen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Codegen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-orm-in-a-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the ORM in a module
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the ORM in a module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-generated-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the generated code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sidebar_position-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      sidebar_position: 1
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cosmos-rfc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RFC 004: Account System Refactor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cosmos-sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cosmos SDK Core Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ibc-accounts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interchain Accounts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ibc-fee-middleware/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ibc-transfer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="protocol-buffers-in-cosmos-sdk">Protocol Buffers in Cosmos SDK</h1>
+<h2 id="overview">Overview</h2>
+<p>The Cosmos SDK uses Protocol Buffers for serialization and API definitions. Generation is handled via a Docker image: <code>ghcr.io/cosmos/proto-builder:0.15.x</code>.</p>
+<h2 id="generation-tools">Generation Tools</h2>
+<ul>
+<li><strong>Buf</strong>: Primary tool for protobuf management</li>
+<li><strong>protocgen.sh</strong>: Core generation script in <code>scripts/</code> </li>
+<li><strong>Makefile Commands</strong>: Standard commands for generate, lint, format</li>
+</ul>
+<h2 id="key-components">Key Components</h2>
+<h3 id="buf-configuration">Buf Configuration</h3>
+<ol>
+<li><strong>Workspace Setup</strong></li>
+<li>Root level buf workspace configuration</li>
+<li>
+<p>Manages multiple protobuf directories</p>
+</li>
+<li>
+<p><strong>Directory Structure</strong>
+   <code>proto/
+   ├── buf.gen.gogo.yaml    # GoGo Protobuf generation
+   ├── buf.gen.pulsar.yaml  # Pulsar API generation  
+   ├── buf.gen.swagger.yaml # OpenAPI/Swagger docs
+   ├── buf.lock            # Dependencies
+   ├── buf.yaml            # Core configuration
+   ├── cosmos/            # Core protos
+   └── tendermint/        # Consensus protos</code></p>
+</li>
+<li>
+<p><strong>Module Protos</strong></p>
+</li>
+<li>Located in <code>x/{moduleName}/proto</code></li>
+<li>Module-specific message definitions</li>
+</ol>
+<h4 id="bufgengogoyaml"><code>buf.gen.gogo.yaml</code></h4>
+<p><code>buf.gen.gogo.yaml</code> defines how the protobuf files should be generated for use with in the module. This file uses <a href="https://github.com/gogo/protobuf">gogoproto</a>, a separate generator from the google go-proto generator that makes working with various objects more ergonomic, and it has more performant encode and decode steps</p>
+<p>```go reference
+https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.gen.gogo.yaml#L1-L9</p>
+<pre><code>
+#### `buf.gen.pulsar.yaml`
+
+`buf.gen.pulsar.yaml` defines how protobuf files should be generated using the [new golang apiv2 of protobuf](https://go.dev/blog/protobuf-apiv2). This generator is used instead of the google go-proto generator because it has some extra helpers for Cosmos SDK applications and will have more performant encode and decode than the google go-proto generator. You can follow the development of this generator [here](https://github.com/cosmos/cosmos-proto).
+
+```go reference
+https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.gen.pulsar.yaml#L1-L18
+</code></pre>
+<h4 id="bufgenswaggeryaml"><code>buf.gen.swagger.yaml</code></h4>
+<p><code>buf.gen.swagger.yaml</code> generates the swagger documentation for the query and messages of the chain. This will only define the REST API end points that were defined in the query and msg servers. You can find examples of this <a href="https://github.com/cosmos/cosmos-sdk/blob/main/x/bank/proto/cosmos/bank/v1beta1/query.proto">here</a></p>
+<p>```go reference
+https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.gen.swagger.yaml#L1-L6</p>
+<pre><code>
+#### `buf.lock`
+
+This is an autogenerated file based off the dependencies required by the `.gen` files. There is no need to copy the current one. If you depend on cosmos-sdk proto definitions a new entry for the Cosmos SDK will need to be provided. The dependency you will need to use is `buf.build/cosmos/cosmos-sdk`.
+
+```go reference
+https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.lock#L1-L16
+</code></pre>
+<h4 id="bufyaml"><code>buf.yaml</code></h4>
+<p><code>buf.yaml</code> defines the <a href="https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.yaml#L3">name of your package</a>, which <a href="https://buf.build/docs/tutorials/getting-started-with-buf-cli#detect-breaking-changes">breakage checker</a> to use and how to <a href="https://buf.build/docs/tutorials/getting-started-with-buf-cli#lint-your-api">lint your protobuf files</a>.</p>
+<p>It is advised to use a tagged version of the buf modules corresponding to the version of the Cosmos SDK being are used.</p>
+<p>```go reference
+https://github.com/cosmos/cosmos-sdk/blob/main/proto/buf.yaml#L1-L24</p>
+<pre><code>
+We use a variety of linters for the Cosmos SDK protobuf files. The repo also checks this in ci.
+A reference to the github actions can be found [here](https://github.com/cosmos/cosmos-sdk/blob/main/.github/workflows/proto.yml#L1-L32)
+
+# ORM
+
+The Cosmos SDK ORM is a state management library that provides a rich, but opinionated set of tools for managing a
+module's state. It provides support for:
+
+- type safe management of state
+- multipart keys
+- secondary indexes
+- unique indexes
+- easy prefix and range queries
+- automatic genesis import/export
+- automatic query services for clients, including support for light client proofs (still in development)
+- indexing state data in external databases (still in development)
+
+## Design and Philosophy
+
+The ORM's data model is inspired by the relational data model found in SQL databases. The core abstraction is a table
+with a primary key and optional secondary indexes.
+
+Because the Cosmos SDK uses protobuf as its encoding layer, ORM tables are defined directly in .proto files using
+protobuf options. Each table is defined by a single protobuf `message` type and a schema of multiple tables is
+represented by a single .proto file.
+
+Table structure is specified in the same file where messages are defined in order to make it easy to focus on better
+design of the state layer. Because blockchain state layout is part of the public API for clients (TODO: link to docs on
+light client proofs), it is important to think about the state layout as being part of the public API of a module.
+Changing the state layout actually breaks clients, so it is ideal to think through it carefully up front and to aim for
+a design that will eliminate or minimize breaking changes down the road. Also, good design of state enables building
+more performant and sophisticated applications. Providing users with a set of tools inspired by relational databases
+which have a long history of database design best practices and allowing schema to be specified declaratively in a
+single place are design choices the ORM makes to enable better design and more durable APIs.
+
+Also, by only supporting the table abstraction as opposed to key-value pair maps, it is easy to add to new
+columns/fields to any data structure without causing a breaking change and the data structures can easily be indexed in
+any off-the-shelf SQL database for more sophisticated queries.
+
+The encoding of fields in keys is designed to support ordered iteration for all protobuf primitive field types
+except for `bytes` as well as the well-known types `google.protobuf.Timestamp` and `google.protobuf.Duration`. Encodings
+are optimized for storage space when it makes sense (see the documentation in `cosmos/orm/v1/orm.proto` for more details)
+and table rows do not use extra storage space to store key fields in the value.
+
+We recommend that users of the ORM attempt to follow database design best practices such as
+[normalization](https://en.wikipedia.org/wiki/Database_normalization) (at least 1NF).
+For instance, defining `repeated` fields in a table is considered an anti-pattern because breaks first normal form (1NF).
+Although we support `repeated` fields in tables, they cannot be used as key fields for this reason. This may seem
+restrictive but years of best practice (and also experience in the SDK) have shown that following this pattern
+leads to easier to maintain schemas.
+
+To illustrate the motivation for these principles with an example from the SDK, historically balances were stored
+as a mapping from account -&gt; map of denom to amount. This did not scale well because an account with 100 token balances
+needed to be encoded/decoded every time a single coin balance changed. Now balances are stored as account,denom -&gt; amount
+as in the example above. With the ORM's data model, if we wanted to add a new field to `Balance` such as
+`unlocked_balance` (if vesting accounts were redesigned in this way), it would be easy to add it to this table without
+requiring a data migration. Because of the ORM's optimizations, the account and denom are only stored in the key part
+of storage and not in the value leading to both a flexible data model and efficient usage of storage.
+
+## Defining Tables
+
+To define a table:
+
+1. create a .proto file to describe the module's state (naming it `state.proto` is recommended for consistency),
+   and import &quot;cosmos/orm/v1/orm.proto&quot;, ex:
+
+```protobuf
+syntax = &quot;proto3&quot;;
+package bank_example;
+
+import &quot;cosmos/orm/v1/orm.proto&quot;;
+</code></pre>
+<ol>
+<li>define a <code>message</code> for the table, ex:</li>
+</ol>
+<pre><code class="language-protobuf">message Balance {
+  bytes account = 1;
+  string denom = 2;
+  uint64 balance = 3;
+}
+</code></pre>
+<ol>
+<li>add the <code>cosmos.orm.v1.table</code> option to the table and give the table an <code>id</code> unique within this .proto file:</li>
+</ol>
+<pre><code class="language-protobuf">message Balance {
+  option (cosmos.orm.v1.table) = {
+    id: 1
+  };
+
+  bytes account = 1;
+  string denom = 2;
+  uint64 balance = 3;
+}
+</code></pre>
+<ol>
+<li>define the primary key field or fields, as a comma-separated list of the fields from the message which should make
+   up the primary key:</li>
+</ol>
+<pre><code class="language-protobuf">message Balance {
+  option (cosmos.orm.v1.table) = {
+    id: 1
+    primary_key: { fields: &quot;account,denom&quot; }
+  };
+
+  bytes account = 1;
+  string denom = 2;
+  uint64 balance = 3;
+}
+</code></pre>
+<ol>
+<li>add any desired secondary indexes by specifying an <code>id</code> unique within the table and a comma-separate list of the
+   index fields:</li>
+</ol>
+<pre><code class="language-protobuf">message Balance {
+  option (cosmos.orm.v1.table) = {
+    id: 1;
+    primary_key: { fields: &quot;account,denom&quot; }
+    index: { id: 1 fields: &quot;denom&quot; } // this allows querying for the accounts which own a denom
+  };
+
+  bytes account = 1;
+  string denom   = 2;
+  uint64 amount  = 3;
+}
+</code></pre>
+<h3 id="auto-incrementing-primary-keys">Auto-incrementing Primary Keys</h3>
+<p>A common pattern in SDK modules and in database design is to define tables with a single integer <code>id</code> field with an
+automatically generated primary key. In the ORM we can do this by setting the <code>auto_increment</code> option to <code>true</code> on the
+primary key, ex:</p>
+<pre><code class="language-protobuf">message Account {
+  option (cosmos.orm.v1.table) = {
+    id: 2;
+    primary_key: { fields: &quot;id&quot;, auto_increment: true }
+  };
+
+  uint64 id = 1;
+  bytes address = 2;
+}
+</code></pre>
+<h3 id="unique-indexes">Unique Indexes</h3>
+<p>A unique index can be added by setting the <code>unique</code> option to <code>true</code> on an index, ex:</p>
+<pre><code class="language-protobuf">message Account {
+  option (cosmos.orm.v1.table) = {
+    id: 2;
+    primary_key: { fields: &quot;id&quot;, auto_increment: true }
+    index: {id: 1, fields: &quot;address&quot;, unique: true}
+  };
+
+  uint64 id = 1;
+  bytes address = 2;
+}
+</code></pre>
+<h3 id="singletons">Singletons</h3>
+<p>The ORM also supports a special type of table with only one row called a <code>singleton</code>. This can be used for storing
+module parameters. Singletons only need to define a unique <code>id</code> and that cannot conflict with the id of other
+tables or singletons in the same .proto file. Ex:</p>
+<pre><code class="language-protobuf">message Params {
+  option (cosmos.orm.v1.singleton) = {
+    id: 3;
+  };
+
+  google.protobuf.Duration voting_period = 1;
+  uint64 min_threshold = 2;
+}
+</code></pre>
+<h2 id="running-codegen">Running Codegen</h2>
+<p>NOTE: the ORM will only work with protobuf code that implements the <a href="https://pkg.go.dev/google.golang.org/protobuf">google.golang.org/protobuf</a>
+API. That means it will not work with code generated using gogo-proto.</p>
+<p>To install the ORM's code generator, run:</p>
+<pre><code class="language-shell">go install cosmossdk.io/orm/cmd/protoc-gen-go-cosmos-orm@latest
+</code></pre>
+<p>The recommended way to run the code generator is to use <a href="https://docs.buf.build/build/usage">buf build</a>.
+This is an example <code>buf.gen.yaml</code> that runs <code>protoc-gen-go</code>, <code>protoc-gen-go-grpc</code> and <code>protoc-gen-go-cosmos-orm</code>
+using buf managed mode:</p>
+<pre><code class="language-yaml">version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: foo.bar/api # the go package prefix of your package
+    override:
+      buf.build/cosmos/cosmos-sdk: cosmossdk.io/api # required to import the Cosmos SDK api module
+plugins:
+  - name: go
+    out: .
+    opt: paths=source_relative
+  - name: go-grpc
+    out: .
+    opt: paths=source_relative
+  - name: go-cosmos-orm
+    out: .
+    opt: paths=source_relative
+</code></pre>
+<h2 id="using-the-orm-in-a-module">Using the ORM in a module</h2>
+<h3 id="initialization">Initialization</h3>
+<p>To use the ORM in a module, first create a <code>ModuleSchemaDescriptor</code>. This tells the ORM which .proto files have defined
+an ORM schema and assigns them all a unique non-zero id. Ex:</p>
+<pre><code class="language-go">var MyModuleSchema = &amp;ormv1alpha1.ModuleSchemaDescriptor{
+    SchemaFile: []*ormv1alpha1.ModuleSchemaDescriptor_FileEntry{
+        {
+            Id:            1,
+            ProtoFileName: mymodule.File_my_module_state_proto.Path(),
+        },
+    },
+}
+</code></pre>
+<p>In the ORM generated code for a file named <code>state.proto</code>, there should be an interface <code>StateStore</code> that got generated
+with a constructor <code>NewStateStore</code> that takes a parameter of type <code>ormdb.ModuleDB</code>. Add a reference to <code>StateStore</code>
+to your module's keeper struct. Ex:</p>
+<pre><code class="language-go">type Keeper struct {
+    db StateStore
+}
+</code></pre>
+<p>Then instantiate the <code>StateStore</code> instance via an <code>ormdb.ModuleDB</code> that is instantiated from the <code>SchemaDescriptor</code>
+above and one or more store services from <code>cosmossdk.io/core/store</code>. Ex:</p>
+<pre><code class="language-go">func NewKeeper(storeService store.KVStoreService) (*Keeper, error) {
+    modDb, err := ormdb.NewModuleDB(MyModuleSchema, ormdb.ModuleDBOptions{KVStoreService: storeService})
+    if err != nil {
+        return nil, err
+    }
+    db, err := NewStateStore(modDb)
+    if err != nil {
+        return nil, err
+    }
+    return Keeper{db: db}, nil
+}
+</code></pre>
+<h3 id="using-the-generated-code">Using the generated code</h3>
+<p>The generated code for the ORM contains methods for inserting, updating, deleting and querying table entries.
+For each table in a .proto file, there is a type-safe table interface implemented in generated code. For instance,
+for a table named <code>Balance</code> there should be a <code>BalanceTable</code> interface that looks like this:</p>
+<pre><code class="language-go">type BalanceTable interface {
+    Insert(ctx context.Context, balance *Balance) error
+    Update(ctx context.Context, balance *Balance) error
+    Save(ctx context.Context, balance *Balance) error
+    Delete(ctx context.Context, balance *Balance) error
+    Has(ctx context.Context, account []byte, denom string) (found bool, err error)
+    // Get returns nil and an error which responds true to ormerrors.IsNotFound() if the record was not found.
+    Get(ctx context.Context, account []byte, denom string) (*Balance, error)
+    List(ctx context.Context, prefixKey BalanceIndexKey, opts ...ormlist.Option) (BalanceIterator, error)
+    ListRange(ctx context.Context, from, to BalanceIndexKey, opts ...ormlist.Option) (BalanceIterator, error)
+    DeleteBy(ctx context.Context, prefixKey BalanceIndexKey) error
+    DeleteRange(ctx context.Context, from, to BalanceIndexKey) error
+
+    doNotImplement()
+}
+</code></pre>
+<p>This <code>BalanceTable</code> should be accessible from the <code>StateStore</code> interface (assuming our file is named <code>state.proto</code>)
+via a <code>BalanceTable()</code> accessor method. If all the above example tables/singletons were in the same <code>state.proto</code>,
+then <code>StateStore</code> would get generated like this:</p>
+<pre><code class="language-go">type BankStore interface {
+    BalanceTable() BalanceTable
+    AccountTable() AccountTable
+    ParamsTable() ParamsTable
+
+    doNotImplement()
+}
+</code></pre>
+<p>So to work with the <code>BalanceTable</code> in a keeper method we could use code like this:</p>
+<pre><code class="language-go">func (k keeper) AddBalance(ctx context.Context, acct []byte, denom string, amount uint64) error {
+    balance, err := k.db.BalanceTable().Get(ctx, acct, denom)
+    if err != nil &amp;&amp; !ormerrors.IsNotFound(err) {
+        return err
+    }
+
+    if balance == nil {
+        balance = &amp;Balance{
+            Account: acct,
+            Denom:   denom,
+            Amount:  amount,
+        }
+    } else {
+        balance.Amount = balance.Amount + amount
+    }
+
+    return k.db.BalanceTable().Save(ctx, balance)
+}
+</code></pre>
+<p><code>List</code> methods take <code>IndexKey</code> parameters. For instance, <code>BalanceTable.List</code> takes <code>BalanceIndexKey</code>. <code>BalanceIndexKey</code>
+let's represent index keys for the different indexes (primary and secondary) on the <code>Balance</code> table. The primary key
+in the <code>Balance</code> table gets a struct <code>BalanceAccountDenomIndexKey</code> and the first index gets an index key <code>BalanceDenomIndexKey</code>.
+If we wanted to list all the denoms and amounts that an account holds, we would use <code>BalanceAccountDenomIndexKey</code>
+with a <code>List</code> query just on the account prefix. Ex:</p>
+<pre><code class="language-go">it, err := keeper.db.BalanceTable().List(ctx, BalanceAccountDenomIndexKey{}.WithAccount(acct))
+</code></pre>
+<hr />
+<h2 id="sidebar_position-1">sidebar_position: 1</h2>
+<h1 id="protocolbuffer-annotations">ProtocolBuffer Annotations</h1>
+<p>This document explains the various protobuf scalars that have been added to make working with protobuf easier for Cosmos SDK application developers</p>
+<h2 id="signer">Signer</h2>
+<p>Signer specifies which field should be used to determine the signer of a message for the Cosmos SDK. This field can be used for clients as well to infer which field should be used to determine the signer of a message.</p>
+<p>Read more about the signer field <a href="./02-messages-and-queries.md">here</a>.</p>
+<p>```protobuf reference
+https://github.com/cosmos/cosmos-sdk/blob/e6848d99b55a65d014375b295bdd7f9641aac95e/proto/cosmos/bank/v1beta1/tx.proto#L40</p>
+<pre><code>
+```proto
+option (cosmos.msg.v1.signer) = &quot;from_address&quot;;
+</code></pre>
+<h2 id="scalar">Scalar</h2>
+<p>The scalar type defines a way for clients to understand how to construct protobuf messages according to what is expected by the module and sdk.</p>
+<pre><code class="language-proto">(cosmos_proto.scalar) = &quot;cosmos.AddressString&quot;
+</code></pre>
+<p>Example of account address string scalar:</p>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e6848d99b55a65d014375b295bdd7f9641aac95e/proto/cosmos/bank/v1beta1/tx.proto#L46</p>
+<pre><code>
+Example of validator address string scalar:
+
+```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/distribution/v1beta1/query.proto#L87
+</code></pre>
+<p>Example of pubkey scalar:</p>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/11068bfbcd44a7db8af63b6a8aa079b1718f6040/proto/cosmos/staking/v1beta1/tx.proto#L94</p>
+<pre><code>
+Example of Decimals scalar:
+
+```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/distribution/v1beta1/distribution.proto#L26
+</code></pre>
+<p>Example of Int scalar:</p>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/gov/v1/gov.proto#L137</p>
+<pre><code>
+There are a few options for what can be provided as a scalar: `cosmos.AddressString`, `cosmos.ValidatorAddressString`, `cosmos.ConsensusAddressString`, `cosmos.Int`, `cosmos.Dec`.
+
+## Implements_Interface
+
+Implement interface is used to provide information to client tooling like [telescope](https://github.com/cosmology-tech/telescope) on how to encode and decode protobuf messages.
+
+```proto
+option (cosmos_proto.implements_interface) = &quot;cosmos.auth.v1beta1.AccountI&quot;;
+</code></pre>
+<h2 id="methodfieldmessage-added-in">Method,Field,Message Added In</h2>
+<p><code>method_added_in</code>, <code>field_added_in</code> and <code>message_added_in</code> are annotations to denotate to clients that a field has been supported in a later version. This is useful when new methods or fields are added in later versions and that the client needs to be aware of what it can call.</p>
+<p>The annotation should be worded as follow:</p>
+<pre><code class="language-proto">option (cosmos_proto.method_added_in) = &quot;cosmos-sdk v0.50.1&quot;;
+option (cosmos_proto.method_added_in) = &quot;x/epochs v1.0.0&quot;;
+option (cosmos_proto.method_added_in) = &quot;simapp v24.0.0&quot;;
+</code></pre>
+<h2 id="amino">Amino</h2>
+<p>The amino codec was removed in <code>v0.50+</code>, this means there is not a need register <code>legacyAminoCodec</code>. To replace the amino codec, Amino protobuf annotations are used to provide information to the amino codec on how to encode and decode protobuf messages.</p>
+<p>:::note
+Amino annotations are only used for backwards compatibility with amino. New modules are not required use amino annotations.
+:::</p>
+<p>The below annotations are used to provide information to the amino codec on how to encode and decode protobuf messages in a backwards compatible manner.</p>
+<h3 id="name">Name</h3>
+<p>Name specifies the amino name that would show up for the user in order for them see which message they are signing.</p>
+<pre><code class="language-proto">option (amino.name) = &quot;cosmos-sdk/BaseAccount&quot;;
+</code></pre>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/bank/v1beta1/tx.proto#L41</p>
+<pre><code>
+### Field_Name
+
+Field name specifies the amino name that would show up for the user in order for them see which field they are signing.
+
+```proto
+uint64 height = 1 [(amino.field_name) = &quot;public_key&quot;];
+</code></pre>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/distribution/v1beta1/distribution.proto#L166</p>
+<pre><code>
+### Dont_OmitEmpty
+
+Dont omitempty specifies that the field should not be omitted when encoding to amino.
+
+```proto
+repeated cosmos.base.v1beta1.Coin amount = 3 [(amino.dont_omitempty)   = true];
+</code></pre>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/bank/v1beta1/bank.proto#L56</p>
+<pre><code>
+### Encoding
+
+Encoding instructs the amino json marshaler how to encode certain fields that may differ from the standard encoding behaviour. The most common example of this is how `repeated cosmos.base.v1beta1.Coin` is encoded when using the amino json encoding format. The `legacy_coins` option tells the json marshaler [how to encode a null slice](https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/x/tx/signing/aminojson/json_marshal.go#L65) of `cosmos.base.v1beta1.Coin`.
+
+```proto
+(amino.encoding)         = &quot;legacy_coins&quot;,
+</code></pre>
+<p>```proto reference
+https://github.com/cosmos/cosmos-sdk/blob/e8f28bf5db18b8d6b7e0d94b542ce4cf48fed9d6/proto/cosmos/bank/v1beta1/genesis.proto#L23</p>
+<pre><code>
+Another example is a protobuf `bytes` that contains a valid JSON document.
+The `inline_json` option tells the json marshaler to embed the JSON bytes into the wrapping document without escaping.
+
+```proto
+(amino.encoding)         = &quot;inline_json&quot;,
+</code></pre>
+<p>E.g. the bytes containing <code>{"foo":123}</code> in the <code>envelope</code> field would lead to the following JSON:</p>
+<pre><code class="language-json">{
+  &quot;envelope&quot;: {
+    &quot;foo&quot;: 123
+  }
+}
+</code></pre>
+<p>If the bytes are not valid JSON, this leads to JSON broken documents. Thus a JSON validity check needs to be in place at some point of the process.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../modules/ucan-spec/" class="md-footer__link md-footer__link--prev" aria-label="Previous: User Controlled Authorization Network (UCAN) Specification">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                User Controlled Authorization Network (UCAN) Specification
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cosmos-rfc/" class="md-footer__link md-footer__link--next" aria-label="Next: RFC 004: Account System Refactor">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                RFC 004: Account System Refactor
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
